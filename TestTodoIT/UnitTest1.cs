@@ -79,5 +79,35 @@ namespace TestTodoIT
             });
             Assert.Equal("Cant be empty or null (Parameter 'lastName')", ex.Message);
         }
+        [Fact]
+        public void testTodoConstuctor()
+        {
+            int testID = 1;
+            string testDesc = "test";
+            Todo todo = new Todo(testID, testDesc);
+
+            Assert.Equal(testID, todo.TodoID);
+            Assert.Equal(testDesc, todo.Description);
+        }
+        [Fact]
+        public void testTodoDone()
+        {
+            int testID = 1;
+            string testDesc = "test";
+            Todo todo = new Todo(testID, testDesc);
+            Assert.True(!todo.Done);
+            todo.Done = true;
+            Assert.True(todo.Done);
+        }
+        [Fact]
+        public void testTodoAssign()
+        {
+            Person person = new Person(1);
+            int testID = 1;
+            string testDesc = "test";
+            Todo todo = new Todo(testID, testDesc);
+            todo.Assignee = person;
+            Assert.Equal(person, todo.Assignee);
+        }
     }
 }
