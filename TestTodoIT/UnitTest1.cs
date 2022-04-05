@@ -125,7 +125,22 @@ namespace TestTodoIT
             int id = PersonSequencer.nextPersonId();
             Assert.Equal(2, id);
         }
-
+        [Fact]
+        public void testTodoSequencerIncrement()
+        {
+            int id = TodoSequencer.nextTodoId();
+            Assert.Equal(1, id);
+        }
+        [Fact]
+        public void testTodoSequencerReset()
+        {
+            TodoSequencer.nextTodoId();
+            TodoSequencer.nextTodoId();
+            TodoSequencer.reset();
+            TodoSequencer.nextTodoId();
+            int id = TodoSequencer.nextTodoId();
+            Assert.Equal(2, id);
+        }
 
     }
 }
