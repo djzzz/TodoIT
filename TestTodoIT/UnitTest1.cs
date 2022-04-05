@@ -2,7 +2,7 @@ using System;
 using Xunit;
 using TodoIT;
 using TodoIT.Model;
-
+using TodoIT.Data;
 namespace TestTodoIT
 {
     public class UnitTest1
@@ -109,5 +109,23 @@ namespace TestTodoIT
             todo.Assignee = person;
             Assert.Equal(person, todo.Assignee);
         }
+        [Fact]
+        public void testPersonSequencerIncrement()
+        {
+            int id = PersonSequencer.nextPersonId();
+            Assert.Equal(1, id);
+        }
+        [Fact]
+        public void testPersonSequencerReset()
+        {
+            PersonSequencer.nextPersonId();
+            PersonSequencer.nextPersonId();
+            PersonSequencer.reset();
+            PersonSequencer.nextPersonId();
+            int id = PersonSequencer.nextPersonId();
+            Assert.Equal(2, id);
+        }
+
+
     }
 }
