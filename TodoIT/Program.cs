@@ -1,5 +1,5 @@
 ﻿using System;
-
+using TodoIT.Model;
 namespace TodoIT
 {
     class Program
@@ -7,6 +7,7 @@ namespace TodoIT
         static void Main(string[] args)
         {
             Console.WriteLine("Hello World!");
+            Person test = new Person(1);
         }
     }
 }
