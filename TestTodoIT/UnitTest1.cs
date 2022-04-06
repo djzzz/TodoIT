@@ -141,6 +141,62 @@ namespace TestTodoIT
             int id = TodoSequencer.nextTodoId();
             Assert.Equal(2, id);
         }
+        [Fact]
+        public void testPeopleClear()
+        {
+            People people = new People();
+            people.Clear();
+            Person person = people.AddPerson();
+            
+            Assert.Equal(1, person.PersonID);
+        }
+        [Fact]
+        public void testPeopleGetALL()
+        {
+            People people = new People();
+            people.Clear();
+            Person[] persons = people.FindAll();
+            Assert.Empty(persons);
+        }
+        [Fact]
+        public void testPeopleFindByID()
+        {
+            People people = new People();
+            Person person = people.AddPerson();
+            person.FirstName = "Carl";
+            person.LastName = "gustavsson";
+            Person Found = people.FindByID(3);
 
+            Assert.Equal("Carl", Found.FirstName);
+        }
+        [Fact]
+        public void testTodoClear()
+        {
+            TodoItems todos = new TodoItems();
+            todos.Clear();
+            Todo todo = todos.AddTodo("Todo my thng");
+
+            Assert.Equal(1, todo.TodoID);
+        }
+        [Fact]
+        public void testTodoGetALL()
+        {
+            TodoItems todos = new TodoItems();
+            todos.Clear();
+            Todo todo = todos.AddTodo("my thingy");
+            Assert.Equal(1, todo.TodoID);
+            Todo[] todoItems = todos.FindAll();
+            Assert.Single(todoItems);
+        }
+        [Fact]
+        public void testTodoFindByID()
+        {
+            TodoItems todos = new TodoItems();
+            Todo person = todos.AddTodo("Something");
+            person.Done = true;
+            Todo Found = todos.FindByID(2);
+
+            Assert.True(Found.Done);
+        }
     }
 }
