@@ -36,11 +36,9 @@ namespace TodoIT.Data
         }
         public void Clear()
         {
-            for (int i = 0; i < todos.Length; i++)
-            {
-                todos[i] = null;
-            }
+            Array.Clear(todos, 0, todos.Length);
             Array.Resize(ref todos, 0);
+            todos = new Todo[0];
             TodoSequencer.reset();
         }
         public Todo[] FindByDoneStatus(bool doneStatus)
@@ -98,6 +96,27 @@ namespace TodoIT.Data
                 }
             }
             return AssignArray;
+        }
+        public Todo[] RemoveTodo(int todoID)
+        {
+            Todo[] todosNew = new Todo[0];
+            for (int i = 0; i < todos.Length; i++)
+            {
+                if (todos[i].TodoID != todoID)
+                {
+                    Array.Resize(ref todosNew, todosNew.Length + 1);
+                    todosNew[todosNew.Length - 1] = todos[i];
+                }
+            }
+            Array.Clear(todos, 0, todos.Length);
+            Array.Resize(ref todos, 0);
+
+            for(int i = 0; i < todosNew.Length; i++)
+            {
+                Array.Resize(ref todos, todos.Length + 1);
+                todos[todos.Length - 1] = todosNew[i];
+            }
+            return todos;
         }
     }
 }

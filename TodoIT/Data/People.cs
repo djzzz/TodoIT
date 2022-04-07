@@ -35,12 +35,22 @@ namespace TodoIT.Data
         }
         public void Clear()
         {
+            person = new Person[0];
+            PersonSequencer.reset();
+        }
+        public Person[] RemovePerson(int personID)
+        {
+            Person[] peopleNew = new Person[0];
             for (int i = 0; i < person.Length; i++)
             {
-                person[i] = null;
+                if (person[i].PersonID != personID)
+                {
+                    Array.Resize(ref peopleNew, peopleNew.Length + 1);
+                    peopleNew[peopleNew.Length - 1] = person[i];
+                }
             }
-            Array.Resize(ref person, 0);
-            PersonSequencer.reset();
+            person = peopleNew;
+            return peopleNew;
         }
     }
 }

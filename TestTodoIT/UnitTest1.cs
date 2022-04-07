@@ -1,8 +1,7 @@
 using System;
-using Xunit;
-using TodoIT;
-using TodoIT.Model;
 using TodoIT.Data;
+using TodoIT.Model;
+using Xunit;
 namespace TestTodoIT
 {
     public class UnitTest1
@@ -10,7 +9,7 @@ namespace TestTodoIT
         [Fact]
         public void testFirstnameSet()
         {
-            
+
             Person person = new Person(1);
 
             person.FirstName = "carl";
@@ -151,7 +150,7 @@ namespace TestTodoIT
             People people = new People();
             people.Clear();
             Person person = people.AddPerson();
-            
+
             Assert.Equal(1, person.PersonID);
         }
         [Fact]
@@ -179,10 +178,11 @@ namespace TestTodoIT
         public void testTodoClear()
         {
             TodoItems todos = new TodoItems();
+            Todo todo1 = todos.AddTodo("Todo my thng");
             todos.Clear();
-            Todo todo = todos.AddTodo("Todo my thng");
+            Todo todo2 = todos.AddTodo("Todo my thng");
 
-            Assert.Equal(1, todo.TodoID);
+            Assert.Equal(1, todos.Size());
         }
         [Fact]
         public void testTodoGetALL()
@@ -215,7 +215,7 @@ namespace TestTodoIT
             todo.Done = true;
             Todo[] Found = todos.FindByDoneStatus(true);
 
-            Assert.Equal("Im done" , Found[0].Description);
+            Assert.Equal("Im done", Found[0].Description);
         }
         [Fact]
         public void testTodoFindByAssigneeID()
@@ -237,8 +237,10 @@ namespace TestTodoIT
 
             TodoItems todos = new TodoItems();
             todos.Clear();
+            People people = new People();
+            people.Clear();
             Todo todo = todos.AddTodo("Im with a person called gustav");
-            Person person = new Person(PersonSequencer.nextPersonId());
+            Person person = people.AddPerson();
             person.FirstName = "gustav";
             todo.Assignee = person;
             Todo[] Found = todos.FindByAssigneePerson(person);
@@ -251,10 +253,32 @@ namespace TestTodoIT
 
             TodoItems todos = new TodoItems();
             todos.Clear();
-            Todo todo = todos.AddTodo("Im alone");
+            todos.AddTodo("Im alone");
             Todo[] Found = todos.FindUnassignedTodoItems();
 
-            Assert.Equal("Im alone", Found[0].Description);
+            Assert.Equal(1, todos.Size());
+        }
+        [Fact]
+        public void testPeopleRemove()
+        {
+            People people = new People();
+            people.Clear();
+            Person person1 = people.AddPerson();
+            person1.FirstName = "carl";
+            Person person2 = people.AddPerson();
+            person2.FirstName = "gustav";
+            Person[] removed = people.RemovePerson(person1.PersonID);
+            Assert.Equal("gustav", removed[0].FirstName);
+        }
+        [Fact]
+        public void testTodoRemove()
+        {
+            TodoItems todos = new TodoItems();
+            todos.Clear();
+            Todo todo1 = todos.AddTodo("Im first");
+            Todo todo2 = todos.AddTodo("Im secound");
+            Todo[] removed = todos.RemoveTodo(todo1.TodoID);
+            Assert.Equal(1, todos.Size());
         }
     }
 }
