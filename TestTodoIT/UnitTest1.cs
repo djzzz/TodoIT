@@ -112,6 +112,7 @@ namespace TestTodoIT
         [Fact]
         public void testPersonSequencerIncrement()
         {
+            PersonSequencer.reset();
             int id = PersonSequencer.nextPersonId();
             Assert.Equal(1, id);
         }
@@ -128,18 +129,21 @@ namespace TestTodoIT
         [Fact]
         public void testTodoSequencerIncrement()
         {
+            TodoSequencer.reset();
             int id = TodoSequencer.nextTodoId();
             Assert.Equal(1, id);
         }
         [Fact]
         public void testTodoSequencerReset()
         {
+
             TodoSequencer.nextTodoId();
             TodoSequencer.nextTodoId();
             TodoSequencer.reset();
             TodoSequencer.nextTodoId();
             int id = TodoSequencer.nextTodoId();
             Assert.Equal(2, id);
+
         }
         [Fact]
         public void testPeopleClear()
@@ -161,11 +165,13 @@ namespace TestTodoIT
         [Fact]
         public void testPeopleFindByID()
         {
+
             People people = new People();
+            people.Clear();
             Person person = people.AddPerson();
             person.FirstName = "Carl";
             person.LastName = "gustavsson";
-            Person Found = people.FindByID(3);
+            Person Found = people.FindByID(1);
 
             Assert.Equal("Carl", Found.FirstName);
         }
@@ -192,11 +198,63 @@ namespace TestTodoIT
         public void testTodoFindByID()
         {
             TodoItems todos = new TodoItems();
-            Todo person = todos.AddTodo("Something");
-            person.Done = true;
-            Todo Found = todos.FindByID(2);
+            todos.Clear();
+            Todo todo = todos.AddTodo("Something");
+            todo.Done = true;
+            Todo Found = todos.FindByID(1);
 
             Assert.True(Found.Done);
+        }
+        [Fact]
+        public void testTodoFindByDoneStatus()
+        {
+
+            TodoItems todos = new TodoItems();
+            todos.Clear();
+            Todo todo = todos.AddTodo("Im done");
+            todo.Done = true;
+            Todo[] Found = todos.FindByDoneStatus(true);
+
+            Assert.Equal("Im done" , Found[0].Description);
+        }
+        [Fact]
+        public void testTodoFindByAssigneeID()
+        {
+
+            TodoItems todos = new TodoItems();
+            todos.Clear();
+            Todo todo = todos.AddTodo("Im with a person");
+            Person person = new Person(PersonSequencer.nextPersonId());
+            person.FirstName = "gustav";
+            todo.Assignee = person;
+            Todo[] Found = todos.FindByAssigneeID(todo.Assignee.PersonID);
+
+            Assert.Equal(person.PersonID, Found[0].Assignee.PersonID);
+        }
+        [Fact]
+        public void testTodoFindByAssignePerson()
+        {
+
+            TodoItems todos = new TodoItems();
+            todos.Clear();
+            Todo todo = todos.AddTodo("Im with a person called gustav");
+            Person person = new Person(PersonSequencer.nextPersonId());
+            person.FirstName = "gustav";
+            todo.Assignee = person;
+            Todo[] Found = todos.FindByAssigneePerson(person);
+
+            Assert.Equal("Im with a person called gustav", Found[0].Description);
+        }
+        [Fact]
+        public void testTodoFindByUnassigned()
+        {
+
+            TodoItems todos = new TodoItems();
+            todos.Clear();
+            Todo todo = todos.AddTodo("Im alone");
+            Todo[] Found = todos.FindUnassignedTodoItems();
+
+            Assert.Equal("Im alone", Found[0].Description);
         }
     }
 }
