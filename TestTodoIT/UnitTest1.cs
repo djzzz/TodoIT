@@ -256,7 +256,7 @@ namespace TestTodoIT
             todos.AddTodo("Im alone");
             Todo[] Found = todos.FindUnassignedTodoItems();
 
-            Assert.Equal(1, todos.Size());
+            Assert.Equal(("Im alone"), Found[0].Description);
         }
         [Fact]
         public void testPeopleRemove()
@@ -278,7 +278,7 @@ namespace TestTodoIT
             Todo todo1 = todos.AddTodo("Im first");
             Todo todo2 = todos.AddTodo("Im secound");
             Todo[] removed = todos.RemoveTodo(todo1.TodoID);
-            Assert.Equal(1, todos.Size());
+            Assert.Equal("Im secound", removed[0].Description);
         }
     }
 }
